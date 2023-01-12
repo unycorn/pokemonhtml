@@ -107,11 +107,11 @@ function Render(path, x, y, scale) {
 
 
 function frontView(dexNum) {
-    return 'pokemon/front/' + dexNum + '.png';
+    return 'front/' + dexNum + '.png';
 }
 
 function backView(dexNum) {
-    return 'pokemon/back/' + dexNum + '.png';
+    return 'back/' + dexNum + '.png';
 }
 
 
