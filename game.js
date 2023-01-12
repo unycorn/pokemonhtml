@@ -9,15 +9,28 @@ var canvasScale = 3; //canvas pixels per ingame pixels
 var unrenderedItem = false;
 
 class Pokemon {
+    get maxHP() {
+        var Base = this.base[5];
+        var IV = this.IV['HP'];
+        var EV = Math.floor(this.EV['HP'] / 4);
+        var Lvl = this.level;
+
+        return Math.floor( ( 2*Base + IV + EV ) * Lvl / 100 ) + Lvl + 10;
+    }
     constructor(type, level, gender, isUser, EV, IV) {
         this.type = type;
         this.level = level;
         this.gender = gender;
+        if(type == 29 || type == 32)
+            this.gender = '';
+
         this.isUser = isUser;
 
         this.EV = EV;
         this.IV = IV;
         this.base = pkmnData[type];
+
+        this.HP = this.maxHP;
 
         if(isUser) {
             this.img = backView(type);
@@ -32,14 +45,6 @@ class Pokemon {
         this.name = pkmnList[type-1];
     }
 
-    get maxHP() {
-        var Base = this.base[5];
-        var IV = this.IV['HP'];
-        var EV = Math.floor(this.EV['HP'] / 4);
-        var Lvl = this.level;
-
-        return Math.floor( (2*Base + IV + EV*Lvl)/100 ) + Lvl + 10;
-    }
 
     render(vOffset=0) {
         Render(this.img, this.x, this.y + vOffset, 1);
@@ -48,8 +53,8 @@ class Pokemon {
 
 
 
-var playerMon= new Pokemon(1, 22, '>', true);
-var enemyMon = new Pokemon(2, 22, '<', false);
+/*var playerMon= new Pokemon(1, 22, '>', true);
+var enemyMon = new Pokemon(2, 22, '<', false);*/
 
 var nameText = new Image();
 var battleText = new Image();
@@ -102,11 +107,11 @@ function Render(path, x, y, scale) {
 
 
 function frontView(dexNum) {
-    return 'C:/Desktop/pokemon/front/' + dexNum + '.png';
+    return 'pokemon/front/' + dexNum + '.png';
 }
 
 function backView(dexNum) {
-    return 'C:/Desktop/pokemon/back/' + dexNum + '.png';
+    return 'pokemon/back/' + dexNum + '.png';
 }
 
 
@@ -144,6 +149,10 @@ function textbox(player, enemy) {
     renderNameText(enemy.name + enemy.gender, 23, 19);
     c.drawImage(nameText, 532, 0, 9, 11, (88-lshift1) * canvasScale, 19 * canvasScale, 9 * canvasScale, 11 * canvasScale);
     renderNameText(level, (97-lshift2), 19);
+    var hpmod = player.HP.toString().padStart(3, ' ') + '/' + player.maxHP.toString().padStart(3, ' ');
+    console.log(hpmod);
+    renderNameText(hpmod, 186, 96);
+
 }
 
 function background() {
@@ -244,6 +253,10 @@ function battleTextPos(letter) {
 function renderNameText(text,x,y) {
     var xPos = x;
     for (i = 0; i < text.length; i++) {
+        if(text[i] == ' ') {
+            xPos += 5;
+            continue;
+        }
         var letterSize = 5;
         if(text[i] == 'I' || text[i] == 'T' || text[i] == 'Y')
             letterSize = 4;
