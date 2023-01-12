@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <script src='data.js'></script>
+  </head>
+  <body>
+    <style>
+      /*
+      audio,
+      canvas,
+      progress,
+      video {
+          display: inline-block;
+          vertical-align: baseline;
+      }
+      html, body, div {
+          margin: 0;
+          padding: 0;
+      }
+      canvas {
+          position: absolute;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 0;
+      }
+     */
+      .container {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -moz-transform: translateX(-50%) translateY(-50%);
+          -webkit-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%);
+          background-color: #ddd;
+          border-radius: 12px;
+      }
+      body {
+          background-color: #330099;
+      }
+      canvas {
+          border-radius:6px;
+          border: 10px solid black;
+      }
+    </style>
+    <div class="container">
+      <canvas id='game' width='720px' height='480px' style='image-rendering: -moz-crisp-edges;'></canvas>
+    </div>
+
+    <script src='game.js'></script>
+  </body>
+</html>
